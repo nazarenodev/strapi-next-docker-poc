@@ -1,0 +1,1 @@
+# strapi-next-docker-poc
