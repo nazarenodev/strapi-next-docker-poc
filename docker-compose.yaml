@@ -1,0 +1,41 @@
+version: "3.8"
+networks:
+  strapi_nextjs:
+
+services:
+  strapi:
+    build: ./backend
+    ports:
+      - "1337:1337"
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_HOST: postgres
+      DATABASE_CLIENT: postgres
+      DATABASE_NAME: strapi
+      DATABASE_USERNAME: strapi
+      DATABASE_PASSWORD: strapi
+    networks:
+      strapi_nextjs:
+
+  next:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    networks:
+      strapi_nextjs:
+
+  postgres:
+    image: postgres:13
+    container_name: strapi_nextjs_postgres
+    environment:
+      POSTGRES_USER: strapi
+      POSTGRES_PASSWORD: strapi
+      POSTGRES_DB: strapi
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      strapi_nextjs:
+
+volumes:
+  pgdata:
